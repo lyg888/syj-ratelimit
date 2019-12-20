@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 /**
  * Description :
  *
- * @author  syj
+ * @author syj
  * CreateTime    2018/09/04
  * Description   开启限流功能的标识注解
  */

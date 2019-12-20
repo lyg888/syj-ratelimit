@@ -21,7 +21,6 @@ import java.util.List;
  */
 @Slf4j
 public class RedisRateLimiterCounterImpl extends RateLimiter {
-
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -35,7 +34,7 @@ public class RedisRateLimiterCounterImpl extends RateLimiter {
     public void counterConsume(String key, long limit, long lrefreshInterval, long tokenBucketStepNum, long tokenBucketTimeInterval) {
         List<Object> keyList = new ArrayList();
         keyList.add(key);
-        String hashTag=getHashTag(key);
+        String hashTag = getHashTag(key);
         keyList.add(limit + hashTag);
         keyList.add(lrefreshInterval + hashTag);
         String result = redisTemplate.execute(redisScript, keyList, keyList).toString();
@@ -45,12 +44,11 @@ public class RedisRateLimiterCounterImpl extends RateLimiter {
     }
 
     private static String getHashTag(String key) {
-        if (key.indexOf(Const.HASH_TAG_SUFFIX) > key.indexOf(Const.HASH_TAG_PRFIX)+ 1) {
+        if (key.indexOf(Const.HASH_TAG_SUFFIX) > key.indexOf(Const.HASH_TAG_PRFIX) + 1) {
             return key;
         }
         key = key.replaceAll(Const.HASH_TAG_PRFIX, "");
         key = key.replaceAll(Const.HASH_TAG_SUFFIX, "");
         return new StringBuffer("{").append(key).append("}").toString();
     }
-
 }

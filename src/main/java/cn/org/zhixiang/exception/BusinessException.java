@@ -3,7 +3,7 @@ package cn.org.zhixiang.exception;
 /**
  * Description :
  *
- * @author  syj
+ * @author syj
  * CreateTime    2018/09/07
  * Description   业务异常信息类
  */
@@ -11,7 +11,7 @@ public class BusinessException extends RuntimeException {
     private String msg;
     private Integer status;
 
-    public BusinessException(BusinessErrorEnum error){
+    public BusinessException(BusinessErrorEnum error) {
         this.msg = error.getMsg();
     }
 
@@ -24,6 +24,7 @@ public class BusinessException extends RuntimeException {
     public String getMessage() {
         return msg;
     }
+
     public String getMsg() {
         return msg;
     }

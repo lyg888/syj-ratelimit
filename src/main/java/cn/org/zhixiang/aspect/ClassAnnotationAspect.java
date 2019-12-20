@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 /**
  * Description :
  *
- * @author  syj
+ * @author syj
  * CreateTime    2018/09/05
  * Description   MethodRateLimit注解切面类
  */
@@ -28,7 +28,6 @@ public class ClassAnnotationAspect {
 
 
     /**
-     *
      * @param classRateLimit 注解
      */
     @Pointcut("@within(classRateLimit)")
@@ -37,16 +36,12 @@ public class ClassAnnotationAspect {
 
 
     /**
-     *
-     * @param joinPoint 切点
+     * @param joinPoint      切点
      * @param classRateLimit 注解
      */
     @Before("@within(classRateLimit)")
     public void doBefore(JoinPoint joinPoint, ClassRateLimit classRateLimit) {
-        String key= RateLimiterUtil.getRateKey(joinPoint,classRateLimit.checkType());
-        rateLimiterAlgorithm.consume(key,classRateLimit.limit(),classRateLimit.refreshInterval(),classRateLimit.tokenBucketStepNum(),classRateLimit.tokenBucketTimeInterval());
+        String key = RateLimiterUtil.getRateKey(joinPoint, classRateLimit.checkType());
+        rateLimiterAlgorithm.consume(key, classRateLimit.limit(), classRateLimit.refreshInterval(), classRateLimit.tokenBucketStepNum(), classRateLimit.tokenBucketTimeInterval());
     }
-
-
-
 }

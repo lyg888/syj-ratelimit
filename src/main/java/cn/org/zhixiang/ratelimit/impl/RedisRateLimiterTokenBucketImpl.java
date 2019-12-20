@@ -15,39 +15,33 @@ import java.util.List;
 /**
  * Description :
  *
- * @author  syj
+ * @author syj
  * CreateTime    2018/09/05
  * Description
  */
 @Slf4j
 public class RedisRateLimiterTokenBucketImpl extends RateLimiter {
-
     @Autowired
     private RedisTemplate redisTemplate;
 
     private DefaultRedisScript<Long> redisScript;
 
-
-
-    public RedisRateLimiterTokenBucketImpl(DefaultRedisScript<Long> redisScript){
-        this.redisScript=redisScript;
+    public RedisRateLimiterTokenBucketImpl(DefaultRedisScript<Long> redisScript) {
+        this.redisScript = redisScript;
 
     }
 
     @Override
     public void tokenConsume(String key, long limit, long lrefreshInterval, long tokenBucketStepNum, long tokenBucketTimeInterval) {
-
         List<Object> keyList = new ArrayList();
         keyList.add(key);
-        keyList.add(limit+Const.HASH_TAG);
-        keyList.add(tokenBucketStepNum+Const.HASH_TAG);
-        keyList.add(tokenBucketTimeInterval+Const.HASH_TAG);
-        keyList.add(System.currentTimeMillis()/1000+Const.HASH_TAG);
-        String result=redisTemplate.execute(redisScript,keyList,keyList).toString();
-        if(Const.REDIS_ERROR.equals(result)){
+        keyList.add(limit + Const.HASH_TAG);
+        keyList.add(tokenBucketStepNum + Const.HASH_TAG);
+        keyList.add(tokenBucketTimeInterval + Const.HASH_TAG);
+        keyList.add(System.currentTimeMillis() / 1000 + Const.HASH_TAG);
+        String result = redisTemplate.execute(redisScript, keyList, keyList).toString();
+        if (Const.REDIS_ERROR.equals(result)) {
             throw new BusinessException(BusinessErrorEnum.TOO_MANY_REQUESTS);
         }
-
     }
-
 }

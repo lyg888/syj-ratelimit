@@ -15,25 +15,26 @@ import java.net.UnknownHostException;
 /**
  * Description :
  *
- * @author  syj
+ * @author syj
  * CreateTime    2018/09/05
  * Description   RateLimiter工具类
  */
 public class RateLimiterUtil {
     /**
      * 获取唯一标识此次请求的key
-     * @param joinPoint 切点
+     *
+     * @param joinPoint     切点
      * @param checkTypeEnum 枚举
      * @return key
      */
-    public static String getRateKey(JoinPoint joinPoint, CheckTypeEnum checkTypeEnum){
-        StringBuffer key=new StringBuffer(Const.HASH_TAG);
+    public static String getRateKey(JoinPoint joinPoint, CheckTypeEnum checkTypeEnum) {
+        StringBuffer key = new StringBuffer(Const.HASH_TAG);
         //以方法名加参数列表作为唯一标识方法的key
-        if(CheckTypeEnum.ALL.equals(checkTypeEnum)){
+        if (CheckTypeEnum.ALL.equals(checkTypeEnum)) {
             MethodSignature signature = (MethodSignature) joinPoint.getSignature();
             key.append(signature.getMethod().getName());
-            Class[] parameterTypes=signature.getParameterTypes();
-            for (Class clazz:parameterTypes){
+            Class[] parameterTypes = signature.getParameterTypes();
+            for (Class clazz : parameterTypes) {
                 key.append(clazz.getName());
             }
             key.append(joinPoint.getTarget().getClass());
@@ -41,22 +42,22 @@ public class RateLimiterUtil {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
         //以用户信息作为key
-        if(CheckTypeEnum.USER.equals(checkTypeEnum)){
-            if(request.getUserPrincipal()!=null){
+        if (CheckTypeEnum.USER.equals(checkTypeEnum)) {
+            if (request.getUserPrincipal() != null) {
                 key.append(request.getUserPrincipal().getName());
-            }else{
+            } else {
                 throw new BusinessException(BusinessErrorEnum.USER_NOT_DOUND);
             }
         }
         //以IP地址作为key
-        if(CheckTypeEnum.IP.equals(checkTypeEnum)){
+        if (CheckTypeEnum.IP.equals(checkTypeEnum)) {
             key.append(getIpAddr(request));
         }
         //以自定义内容作为key
-        if(CheckTypeEnum.CUSTOM.equals(checkTypeEnum)){
-            if(request.getAttribute(Const.CUSTOM)!=null){
+        if (CheckTypeEnum.CUSTOM.equals(checkTypeEnum)) {
+            if (request.getAttribute(Const.CUSTOM) != null) {
                 key.append(request.getAttribute(Const.CUSTOM).toString());
-            }else{
+            } else {
                 throw new BusinessException(BusinessErrorEnum.CUSTOM_NOT_DOUND);
             }
         }
@@ -97,5 +98,4 @@ public class RateLimiterUtil {
         }
         return ipAddress;
     }
-
 }

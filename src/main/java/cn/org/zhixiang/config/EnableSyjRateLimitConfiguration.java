@@ -22,13 +22,13 @@ import org.springframework.scripting.support.ResourceScriptSource;
 /**
  * Description :
  *
- * @author  syj
+ * @author syj
  * CreateTime    2018/09/05
  * Description
  */
 @Slf4j
 @Configuration
-@ComponentScan(basePackages="cn.org.zhixiang")
+@ComponentScan(basePackages = "cn.org.zhixiang")
 public class EnableSyjRateLimitConfiguration {
 
 
@@ -45,7 +45,7 @@ public class EnableSyjRateLimitConfiguration {
     @Bean(name = "rateLimiter")
     @ConditionalOnProperty(prefix = Const.PREFIX, name = "algorithm", havingValue = "token")
     public RateLimiter tokenRateLimiter() {
-        DefaultRedisScript<Long> consumeRedisScript=new DefaultRedisScript();
+        DefaultRedisScript<Long> consumeRedisScript = new DefaultRedisScript();
         consumeRedisScript.setResultType(Long.class);
         consumeRedisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("script/redis-ratelimiter-tokenBucket.lua")));
         return new RedisRateLimiterTokenBucketImpl(consumeRedisScript);
@@ -54,15 +54,9 @@ public class EnableSyjRateLimitConfiguration {
     @Bean(name = "rateLimiter")
     @ConditionalOnProperty(prefix = Const.PREFIX, name = "algorithm", havingValue = "counter", matchIfMissing = true)
     public RateLimiter counterRateLimiter() {
-        DefaultRedisScript<Long> redisScript=new DefaultRedisScript();
+        DefaultRedisScript<Long> redisScript = new DefaultRedisScript();
         redisScript.setResultType(Long.class);
         redisScript.setScriptSource(new ResourceScriptSource(new ClassPathResource("script/redis-ratelimiter-counter.lua")));
         return new RedisRateLimiterCounterImpl(redisScript);
     }
-
-
-
-
-
-
 }

@@ -41,5 +41,4 @@ public @interface ClassRateLimit {
      * @return 每次为令牌桶中添加的令牌数量。默认值5个
      */
     public long tokenBucketStepNum() default 5;
-
 }

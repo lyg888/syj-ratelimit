@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 /**
  * Description :
  *
- * @author  syj
+ * @author syj
  * CreateTime    2018/09/05
  * Description   计数器法限流
  */
@@ -24,11 +24,7 @@ public class CounterAlgorithmImpl implements RateLimiterAlgorithm {
     @NonNull
     private RateLimiter rateLimiter;
 
-
-    public void consume(String key, long limit, long lrefreshInterval, long tokenBucketStepNum, long tokenBucketTimeInterval){
-        rateLimiter.counterConsume(key,limit,lrefreshInterval,tokenBucketStepNum,tokenBucketTimeInterval);
+    public void consume(String key, long limit, long lrefreshInterval, long tokenBucketStepNum, long tokenBucketTimeInterval) {
+        rateLimiter.counterConsume(key, limit, lrefreshInterval, tokenBucketStepNum, tokenBucketTimeInterval);
     }
-
-
-
 }
